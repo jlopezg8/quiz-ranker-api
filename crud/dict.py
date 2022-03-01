@@ -1,8 +1,8 @@
 from typing import Any, Dict
 
-from ..exceptions import UserAlreadyExistsError
-from ..models.auth import UserCreate, UserInDB
-from ..services.auth import get_password_hash
+from exceptions import UserAlreadyExistsError
+from models.auth import UserCreate, UserInDB
+from services.auth import get_password_hash
 
 DB = Dict[str, Dict[str, Any]]
 

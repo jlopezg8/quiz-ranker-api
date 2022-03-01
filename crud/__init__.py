@@ -1,10 +1,10 @@
-from ..config import settings
-from ..services.auth import verify_password
+from config import settings
+from services.auth import verify_password
 
 if settings.environment == 'prod':
-    from .deta import *
+    from crud.deta import *
 else:
-    from .dict import *
+    from crud.dict import *
 
 
 def authenticate_user(db, username: str, password: str):

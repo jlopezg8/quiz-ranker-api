@@ -4,12 +4,12 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 
 
-from ..config import settings
-from ..crud import authenticate_user, create_user
-from ..database import get_users
-from ..exceptions import UserAlreadyExistsError
-from ..models.auth import Token, User, UserCreate
-from ..services.auth import create_access_token
+from config import settings
+from crud import authenticate_user, create_user
+from database import get_users
+from exceptions import UserAlreadyExistsError
+from models.auth import Token, User, UserCreate
+from services.auth import create_access_token
 
 router = APIRouter(tags=['auth'])
 

@@ -1,8 +1,8 @@
 from deta import _Base
 
-from ..exceptions import UserAlreadyExistsError
-from ..models.auth import UserCreate, UserInDB
-from ..services.auth import get_password_hash
+from exceptions import UserAlreadyExistsError
+from models.auth import UserCreate, UserInDB
+from services.auth import get_password_hash
 
 
 def create_user(db: _Base, user: UserCreate):

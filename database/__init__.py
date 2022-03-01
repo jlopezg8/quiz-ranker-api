@@ -1,6 +1,6 @@
-from ..config import settings
+from config import settings
 
 if settings.environment == 'prod':
-    from .deta import *
+    from database.deta import *
 else:
-    from .dict import *
+    from database.dict import *

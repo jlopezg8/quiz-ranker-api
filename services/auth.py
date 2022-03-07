@@ -22,7 +22,7 @@ class AuthService:
         else:
             return None
     
-    def create_access_token(user: User):
+    def create_access_token(self, user: User):
         exp_delta=timedelta(minutes=settings.access_token_expire_minutes)
         return jwt.encode(
             {

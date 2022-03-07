@@ -1,13 +1,17 @@
+from http import HTTPStatus
+from urllib.error import HTTPError
+
 from deta import Deta, _Base
 from fastapi import Depends
 
+from config import settings
 from exceptions import UserAlreadyExistsError
 from models import UserInDB
 
 # While using our SDKs(the latest versions) within a Deta Micro, you can omit
 # specifying the project key when instantiating a service instance.
 _deta = Deta(
-    #'project key'
+    settings.deta_project_key
 )
 
 
@@ -28,7 +32,7 @@ class Users:
     def create(self, user: UserInDB):
         try:
             self.db.insert(user.dict(), user.username)
-        except Exception as err:
-            if 'already exists' in str(err):
+        except HTTPError as err:
+            if err.code == HTTPStatus.CONFLICT:
                 raise UserAlreadyExistsError(user.username) from None
             raise

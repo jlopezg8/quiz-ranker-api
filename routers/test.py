@@ -8,11 +8,11 @@ router = APIRouter(
     dependencies=[Depends(get_current_user)],
 )
 
-@router.get('/get_test/', response_model=Test)
+@router.get('/get_test', response_model=Test)
 def get_test():
     ...
 
 
-@router.post('/submit_test/', response_model=TestResult)
+@router.post('/submit_test', response_model=TestResult)
 def submit_test(test_submission: TestSubmission):
     ...

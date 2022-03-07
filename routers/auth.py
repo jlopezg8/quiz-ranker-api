@@ -9,7 +9,7 @@ router = APIRouter(tags=['auth'])
 
 
 @router.post(
-    'login',
+    '/login',
     response_model=AccessToken,
     responses={
         status.HTTP_401_UNAUTHORIZED: {
@@ -35,7 +35,7 @@ def login(
 
 
 @router.post(
-    'signup',
+    '/signup',
     response_model=AccessToken,
     responses={
         status.HTTP_409_CONFLICT: {

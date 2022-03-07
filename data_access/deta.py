@@ -6,7 +6,7 @@ from fastapi import Depends
 
 from config import settings
 from exceptions import UserAlreadyExistsError
-from models import UserInDB
+from models import Question, Test as TestModel, UserInDB
 
 # While using our SDKs(the latest versions) within a Deta Micro, you can omit
 # specifying the project key when instantiating a service instance.
@@ -15,9 +15,23 @@ _deta = Deta(
 )
 
 
-def _get_users():
+def _get_test():
     # This how to connect to or create a database.
     # You can create as many as you want without additional charges.
+    return _deta.Base('test')
+
+
+class Test:
+    def __init__(self, db: _Base = Depends(_get_test)):
+        self.db = db
+
+    def get(self):
+        questions_dicts = self.db.fetch().items
+        questions = [Question(**question) for question in questions_dicts]
+        return TestModel(questions=questions)
+
+
+def _get_users():
     return _deta.Base('users')
 
 

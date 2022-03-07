@@ -34,9 +34,11 @@ class AuthService:
         )
     
     def create_user(self, user: UserCreate):
+        pwd = pwd_context.hash(user.password)
+        print(pwd)
         self.users.create(UserInDB(
             **user.dict(),
-            hashed_password=pwd_context.hash(user.password)
+            hashed_password=pwd
         ))
     
     def get_user(self, username: str):

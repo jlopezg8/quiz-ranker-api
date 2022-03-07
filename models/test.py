@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 
 class Question(BaseModel):
-    id: str
+    key: str
     question: str
     choices: List[str]
     correct_answer_index: int
@@ -15,7 +15,7 @@ class Test(BaseModel):
 
 
 class Answer(BaseModel):
-    question_id: str
+    question_key: str
     answer_index: int
 
 

@@ -1,6 +1,7 @@
 from fastapi import Depends
 
 from data_access import Test
+from models import TestResult, TestSubmission
 
 
 class TestService:
@@ -9,3 +10,6 @@ class TestService:
     
     def get_test(self):
         return self.test.get()
+
+    def submit_test(self, test_submission: TestSubmission):
+        return TestResult(result='G1')

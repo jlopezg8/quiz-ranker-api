@@ -15,5 +15,6 @@ def get_test(test: TestService = Depends()):
 
 
 @router.post('/submit_test', response_model=TestResult)
-def submit_test(test_submission: TestSubmission):
-    ...
+def submit_test(test_submission: TestSubmission,
+                test: TestService = Depends()):
+    return test.submit_test(test_submission)

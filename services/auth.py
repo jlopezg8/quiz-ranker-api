@@ -1,29 +1,43 @@
 from datetime import datetime, timedelta
-from typing import Optional
 
+from fastapi import Depends
 from jose import jwt
 from passlib.context import CryptContext
 
 from config import settings
+from data_access import Users
+from models import User, UserCreate, UserInDB
 
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
 
-def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)
-
-
-def get_password_hash(password):
-    return pwd_context.hash(password)
-
-
-def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
-    to_encode = data.copy()
-    if expires_delta:
-        expire = datetime.utcnow() + expires_delta
-    else:
-        expire = datetime.utcnow() + timedelta(minutes=15)
-    to_encode.update({'exp': expire})
-    encoded_jwt = jwt.encode(to_encode, settings.secret_key,
-                             algorithm=settings.algorithm)
-    return encoded_jwt
+class AuthService:
+    def __init__(self, users: Users = Depends()):
+        self.users = users
+    
+    def authenticate_user(self, username: str, password: str):
+        user = self.users.get(username)
+        if user and pwd_context.verify(password, user.hashed_password):
+            return user
+        else:
+            return None
+    
+    def create_access_token(user: User):
+        exp_delta=timedelta(minutes=settings.access_token_expire_minutes)
+        return jwt.encode(
+            {
+                'sub': user.username,
+                'exp': datetime.utcnow() + exp_delta,
+            },
+            settings.secret_key,
+            settings.algorithm
+        )
+    
+    def create_user(self, user: UserCreate):
+        self.users.create(UserInDB(
+            **user.dict(),
+            hashed_password=pwd_context.hash(user.password)
+        ))
+    
+    def get_user(self, username: str):
+        return self.users.get(username)
